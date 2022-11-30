@@ -1,9 +1,8 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
 on:
   push:
+  pull_request:
 
   workflow_dispatch:
 
@@ -14,16 +13,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Use Node
-        uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
-          cache: 'yarn'
-          cache-dependency-path: ./sub/yarn.lock
+          node-version: 16
+          check-latest: true
+          cache: "npm"
+          cache-dependency-path: functions/package-lock.json
 
-      - name: Run a multi-line script
-        run: |
-          node --version
-          yarn install
-          node main.js
-        working-directory: sub
+
+      - run: |
+          pwd
+          ls -la
+          npm install
+          ls -la node_modules
+        working-directory: functions
